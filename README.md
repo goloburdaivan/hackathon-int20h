@@ -1,8 +1,3 @@
-<div align="center">
-<img src="https://avatars1.githubusercontent.com/u/33844443" height="100px" alt="CorpSoft Logo">
-    <h1 align="center">README Proxuma Backend</h1>
-</div>
-
 ### Installing using Docker
 
 > You need to have [docker](http://www.docker.com) (1.17.0+) and
