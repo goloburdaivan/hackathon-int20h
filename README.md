@@ -51,6 +51,5 @@ _To stop all of the containers run:_ `sail stop`
 
 ```sh
 sail composer install && sail artisan key:generate && sail artisan migrate && sail artisan storage:link && sail artisan db:seed
-l
 ```
 
