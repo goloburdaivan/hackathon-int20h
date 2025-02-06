@@ -8,4 +8,16 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        host: '0.0.0.0',
+        hmr: {
+            protocol: 'ws',
+            host: '127.0.0.1',
+        },
+        cors: {
+            origin: '*', // Разрешаем все источники
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+        }
+    }
 });

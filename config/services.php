@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'github' => [
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
+        'redirect' => 'https://692a-46-149-92-218.ngrok-free.app/oauth/callback',
+    ],
 ];

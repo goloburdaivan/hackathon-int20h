@@ -21,14 +21,8 @@ abstract class AbstractRepository
     /**
      * @throws \Exception
      */
-    public function update(int $id, array $data): ?Model
+    public function update(Model $model, array $data): ?Model
     {
-         $model = $this->find($id);
-
-         if (!$model) {
-             return null;
-         }
-
          $model->fill($data);
 
         if (!$model->save()) {
