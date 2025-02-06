@@ -11,6 +11,8 @@
 git clone *repository name*
 cd *folder*
 cp .env.example .env
+npm install
+npm run build
 ```
 
 ### You need to configure the env and change the variables
