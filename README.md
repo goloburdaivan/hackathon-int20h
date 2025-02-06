@@ -12,7 +12,7 @@ git clone *repository name*
 cd *folder*
 cp .env.example .env
 npm install
-npm run build
+npm run build or npm run dev
 ```
 
 ### You need to configure the env and change the variables
