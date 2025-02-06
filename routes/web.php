@@ -10,6 +10,10 @@ Route::get('/', function () {
     ->name('home')
     ->middleware(['auth']);
 
+Route::get('/test', function () {
+    return Inertia::render('Quest/Create');
+});
+
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'loginIndex')->name('login');
     Route::get('/register', 'registerIndex')->name('register');
