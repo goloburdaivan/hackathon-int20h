@@ -13,7 +13,7 @@ cd *folder*
 cp .env.example .env
 ```
 
-### You need to configure the env and change the variables in the values below, with ports in the range 49152 to 65535:
+### You need to configure the env and change the variables
 
 ```sh
 APP_SERVICE=backend
