@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\Enums\QuestionType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $title
@@ -16,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Question extends Model
 {
-    use CrudTrait;
     protected $fillable = [
         'title',
         'description',
@@ -25,10 +25,17 @@ class Question extends Model
         'single_answer',
         'questions',
         'coordinates',
+        'quest_id',
     ];
 
     protected $casts = [
         'questions' => 'array',
         'coordinates' => 'array',
+        'type' => QuestionType::class,
     ];
+
+    public function quest(): BelongsTo
+    {
+        return $this->belongsTo(Quest::class);
+    }
 }

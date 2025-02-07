@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Quest;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProfileRequest extends FormRequest
+class UpdateQuestRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,8 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'email' => ['required', 'string', 'unique:users,email,' . auth()->id()],
-            'avatar' => ['image', 'mimes:jpeg,jpg,png', 'max:2048', 'nullable'],
+            'description' => ['required', 'string'],
+            'cover' => ['image', 'mimes:jpeg,jpg,png', 'max:2048', 'nullable'],
         ];
     }
 }
