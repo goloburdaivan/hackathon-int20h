@@ -21,9 +21,12 @@ class UserService
         $data = $request->validated();
         $user = $this->userRepository->update($user, $data);
 
-        $path = $request->file('avatar')->store('avatars', 'public');
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user = $this->userRepository->update($user, ['avatar' => $path]);
+        }
 
         /** @var User */
-        return $this->userRepository->update($user, ['avatar' => $path]);
+        return $user;
     }
 }
