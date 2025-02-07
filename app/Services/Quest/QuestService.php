@@ -63,6 +63,12 @@ class QuestService
             ->loadCount('questions');
     }
 
+    public function getWithQuestions(Quest $quest): Quest
+    {
+        return $quest
+            ->load('questions');
+    }
+
     public function getPaginated(int $pages = 10): LengthAwarePaginator
     {
         $query = $this->questRepository

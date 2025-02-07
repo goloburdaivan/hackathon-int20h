@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Quest\CreateQuestRequest;
 use App\Http\Requests\Quest\UpdateQuestRequest;
 use App\Http\Resources\Quest\QuestBaseResource;
+use App\Http\Resources\Quest\QuestResource;
 use App\Models\Quest;
 use App\Models\User;
 use App\Services\Quest\QuestService;
@@ -42,9 +43,11 @@ class QuestController extends Controller
         return Inertia::render('Quest/Create');
     }
 
-    public function edit(): Response
+    public function edit(Quest $quest): Response
     {
-        return Inertia::render('Quest/Edit');
+        return Inertia::render('Quest/Edit', [
+            'quest' => new QuestResource($quest),
+        ]);
     }
 
     public function show(Quest $quest): Response

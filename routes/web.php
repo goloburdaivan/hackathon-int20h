@@ -61,4 +61,7 @@ Route::controller(QuestController::class)->middleware('auth')->group(function ()
 
 Route::controller(QuestionController::class)->middleware('auth')->group(function () {
     Route::get('/quests/{quest}/questions', 'index');
+    Route::post('/quests/{quest}/questions', 'store');
+    Route::delete('/quests/{quest}/questions/{question}', 'destroy');
+    Route::patch('/quests/{quest}/questions/{question}', 'update');
 });
