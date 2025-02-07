@@ -2,32 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Quest;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Resources\User\UserProfileResource;
+use App\Models\User;
+use App\Repository\QuestRepository;
+use App\Services\UserService;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ProfileController extends Controller
 {
-    public function index(Request $request): Response
+    public function __construct(
+        private readonly QuestRepository $questRepository,
+        private readonly UserService $userService,
+    ) {
+    }
+
+    public function index(): Response
     {
-        $user = $request->user();
-        $quests = Quest::where('owner_id', $user->id)->get();
+        /** @var User $user */
+        $user = auth()->user();
+        $quests = $this->questRepository->findByOwner($user->id);
 
         return Inertia::render('Profile/Profile', [
-            'user' => $user,
+            'user' => new UserProfileResource($user),
             'quests' => $quests,
         ]);
     }
 
-    public function update(Request $request)
+    /**
+     * @throws \Exception
+     */
+    public function update(UpdateProfileRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
-        ]);
+        /** @var User $user */
+        $user = auth()->user();
 
-        auth()->user()->update($request->only('name', 'email'));
+        $this->userService->updateProfile($user, $request);
 
         return back()->with('success', 'Профіль оновлено!');
     }

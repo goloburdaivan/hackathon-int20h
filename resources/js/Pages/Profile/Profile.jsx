@@ -20,44 +20,29 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
-function Profile() {
-    const { user, quests } = usePage().props;
-    const { data, setData, put, processing } = useForm({
+function Profile({ user, quests }) {
+    const { data, setData, post, progress } = useForm({
         name: user.name,
         email: user.email,
+        avatar: null,
     });
 
     const [isEditing, setIsEditing] = useState(false);
     const [preview, setPreview] = useState(user.avatar || null);
-    const { post } = useForm();
-
-    const handleAvatarChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreview(reader.result);
-            };
-            reader.readAsDataURL(file);
-
-            const formData = new FormData();
-            formData.append("avatar", file);
-            post("/profile/avatar", { data: formData });
-        }
-    };
 
     const handleSave = () => {
-        put(`/profile/update`, {
+        post("/profile/update", {
             onSuccess: () => setIsEditing(false),
         });
     };
 
-    const handleLogout = () => {
-        post("/logout", {
-            onSuccess: () => window.location.href = "/",
-        });
+    const handleAvatarChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setData("avatar", file);
+            setPreview(URL.createObjectURL(file));
+        }
     };
 
     return (
@@ -78,22 +63,20 @@ function Profile() {
                         position: "relative",
                     }}
                 >
-                    <Box sx={{ position: "absolute", top: 0, left: 0, width: 60, height: 60, backgroundColor: "#b2fab4", borderRadius: "0 0 100px 0" }} />
-                    <Box sx={{ position: "absolute", bottom: 0, right: 0, width: 60, height: 60, backgroundColor: "#b2fab4", borderRadius: "100px 0 0 0" }} />
-
                     <input type="file" accept="image/*" id="avatar-upload" style={{ display: "none" }} onChange={handleAvatarChange} />
                     <label htmlFor="avatar-upload">
                         <Avatar sx={{ width: 100, height: 100, bgcolor: "#81c784", margin: "auto", mb: 2, cursor: "pointer" }} src={preview}>
                             {!preview && <AccountCircleIcon sx={{ fontSize: 50 }} />}
                         </Avatar>
                     </label>
+                    {progress && <Typography variant="body2">Завантаження: {progress.percentage}%</Typography>}
 
                     {isEditing ? (
                         <>
                             <TextField label="Ім'я" variant="outlined" fullWidth value={data.name} onChange={(e) => setData("name", e.target.value)} sx={{ mb: 2 }} />
                             <TextField label="Email" variant="outlined" fullWidth value={data.email} onChange={(e) => setData("email", e.target.value)} sx={{ mb: 2 }} />
                             <Box display="flex" gap={2}>
-                                <Button variant="contained" startIcon={<SaveIcon />} onClick={handleSave} disabled={processing} sx={{ backgroundColor: "#66bb6a", borderRadius: "30px" }}>
+                                <Button variant="contained" startIcon={<SaveIcon />} onClick={handleSave} sx={{ backgroundColor: "#66bb6a", borderRadius: "30px" }}>
                                     Зберегти
                                 </Button>
                                 <Button variant="outlined" startIcon={<CloseIcon />} onClick={() => setIsEditing(false)} sx={{ borderColor: "#d32f2f", color: "#d32f2f", borderRadius: "30px" }}>
@@ -111,20 +94,6 @@ function Profile() {
                             </Button>
                         </>
                     )}
-
-                    <Button
-                        variant="outlined"
-                        startIcon={<ExitToAppIcon />}
-                        onClick={handleLogout}
-                        sx={{
-                            mt: 2,
-                            borderColor: "#d32f2f",
-                            color: "#d32f2f",
-                            borderRadius: "30px",
-                        }}
-                    >
-                        Вийти
-                    </Button>
                 </Box>
 
                 <Paper sx={{ padding: "30px", borderRadius: "16px", boxShadow: 5, backgroundColor: "#ffffff", mt: 4, position: "relative" }}>
