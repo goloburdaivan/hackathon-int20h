@@ -24,5 +24,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/oauth/callback', 'handleOAuthLogin')->name('auth.callback');
 });
 
-Route::get('/profile', [ProfileController::class, 'index'])->middleware(['auth', 'verified']);
-Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::controller(ProfileController::class)->middleware('auth')->group(function () {
+    Route::get('/profile', 'index')->name('profile.index');
+    Route::post('/profile/update', 'update')->name('profile.update');
+});
