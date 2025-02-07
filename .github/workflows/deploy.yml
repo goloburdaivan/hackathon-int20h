@@ -27,11 +27,5 @@ jobs:
             alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
             docker compose down
             docker compose up -d
-
-            echo "Waiting for the container to start..."
-            until docker exec backend ls >/dev/null 2>&1; do
-              sleep 1
-            done
-
             docker exec backend php artisan migrate --force
             docker exec backend npm run build
