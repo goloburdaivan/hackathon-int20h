@@ -27,5 +27,5 @@ jobs:
             alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
             docker compose down
             docker compose up -d
-            docker exec backend php artisan migrate --force
-            docker exec backend npm run build
+            docker exec -it backend php artisan migrate --force
+            docker exec -it backend npm run build
