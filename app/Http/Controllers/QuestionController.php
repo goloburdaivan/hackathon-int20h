@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Questions\CreateQuestionRequest;
+use App\Http\Requests\Questions\UpdateQuestionRequest;
+use App\Http\Resources\Question\QuestionResource;
 use App\Models\Quest;
+use App\Models\Question;
 use App\Models\User;
 use App\Services\Questions\QuestionsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
@@ -20,7 +22,26 @@ class QuestionController extends Controller
     /**
      * @throws \Exception
      */
-    public function store(Quest $quest, CreateQuestionRequest $request): RedirectResponse
+    public function store(CreateQuestionRequest $request, Quest $quest): RedirectResponse
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        if ($quest->owner_id !== $user->id) {
+            return back()->withErrors([
+                'error' => 'You can\'t create questions for other user\'s quest.'
+            ]);
+        }
+
+        $this->questionsService->create($quest, $request);
+
+        return redirect()->route('quest.edit', $quest);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function update(UpdateQuestionRequest $request, Quest $quest, Question $question): RedirectResponse
     {
         /** @var User $user */
         $user = auth()->user();
@@ -31,23 +52,29 @@ class QuestionController extends Controller
             ]);
         }
 
-        $this->questionsService->create($quest, $request);
+        $this->questionsService->update($question, $request);
 
         return redirect()->route('quest.edit', $quest);
     }
 
-    public function show(Request $request): JsonResponse
+    public function show(Quest $quest): JsonResponse
     {
-        return response()->json();
+        return response()->json([
+            'question' => new QuestionResource($this->questionsService->findByQuest($quest->id)),
+        ]);
     }
 
-    public function update(Request $request): JsonResponse
+    public function destroy(Quest $quest, Question $question): RedirectResponse
     {
-        return response()->json();
-    }
+        /** @var User $user */
+        $user = auth()->user();
 
-    public function destroy(Request $request): JsonResponse
-    {
-        return response()->json();
+        if ($quest->owner_id !== $user->id) {
+            return back()->withErrors([
+                'error' => 'You can\'t delete other user\'s question.'
+            ]);
+        }
+
+        return redirect()->route('quest.edit', $quest);
     }
 }
