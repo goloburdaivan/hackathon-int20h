@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -17,8 +17,8 @@ class Quest extends Model
         'cover',
     ];
 
-    public function questions(): BelongsToMany
+    public function questions(): HasMany
     {
-        return $this->belongsToMany(Question::class, 'quest_questions');
+        return $this->hasMany(Question::class);
     }
 }

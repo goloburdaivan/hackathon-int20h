@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\QuestController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\User\AuthController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -56,4 +57,8 @@ Route::controller(QuestController::class)->middleware('auth')->group(function ()
         ->name('quest.update');
     Route::delete('/quests/{quest}', 'destroy')
         ->name('quest.destroy');
+});
+
+Route::controller(QuestionController::class)->middleware('auth')->group(function () {
+    Route::get('/quests/{quest}/questions', 'index');
 });
