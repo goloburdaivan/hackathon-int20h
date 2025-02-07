@@ -24,6 +24,7 @@ jobs:
           script: |
             cd hackathon-int20h
             git pull origin main
+            alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
             sail down
             sail up -d
 
