@@ -57,4 +57,10 @@ class QuestionsService
     {
         $this->questionRepository->delete($question->id);
     }
+
+    public function findById(int $id): ?Question
+    {
+        /** @var Question */
+        return $this->questionRepository->find($id);
+    }
 }

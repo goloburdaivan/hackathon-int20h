@@ -57,10 +57,10 @@ class QuestionController extends Controller
         return redirect()->route('quest.edit', $quest);
     }
 
-    public function show(Quest $quest): JsonResponse
+    public function show(Quest $quest, Question $question): JsonResponse
     {
         return response()->json([
-            'question' => new QuestionResource($this->questionsService->findByQuest($quest->id)),
+            'question' => new QuestionResource($this->questionsService->findById($question->id)),
         ]);
     }
 
