@@ -11,12 +11,12 @@ class ProfileController extends Controller
 {
     public function index(Request $request): Response
     {
-        $user = $request->user(); // Получаем текущего пользователя
-        $quests = Quest::where('owner_id', $user->id)->get(); // Получаем квесты вручную
+        $user = $request->user();
+        $quests = Quest::where('owner_id', $user->id)->get();
 
         return Inertia::render('Profile/Profile', [
             'user' => $user,
-            'quests' => $quests, // Передаем квесты отдельно
+            'quests' => $quests,
         ]);
     }
 
