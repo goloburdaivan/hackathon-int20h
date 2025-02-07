@@ -24,8 +24,10 @@ class QuestController extends Controller
 
     public function index(): Response
     {
+        $quests = $this->questService->getPaginated()->withQueryString();
+
         return Inertia::render('Quest/Index', [
-            'quests' => QuestBaseResource::collection($this->questService->getPaginated())->response()->getData(true),
+            'quests' => QuestBaseResource::collection($quests)->response()->getData(true),
         ]);
     }
 
