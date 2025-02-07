@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { TextField, Button, MenuItem, Select, InputLabel, FormControl, FormHelperText } from '@mui/material';
-import { Inertia } from '@inertiajs/inertia';
 
 const CreateQuestion = () => {
     const [questionData, setQuestionData] = useState({
