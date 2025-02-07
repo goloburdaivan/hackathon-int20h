@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\AuthController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,4 +22,11 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register')->name('auth.register');
     Route::get('/oauth/login-github', 'loginGithub')->name('auth.login-github');
     Route::get('/oauth/callback', 'handleOAuthLogin')->name('auth.callback');
+});
+
+
+Route::controller(ProfileController::class)->prefix('profile')->group(function () {
+    Route::get('/', 'show')->name('profile.show');
+    Route::put('/', 'update')->name('profile.update');
+    Route::delete('/', 'delete')->name('profile.delete');
 });
