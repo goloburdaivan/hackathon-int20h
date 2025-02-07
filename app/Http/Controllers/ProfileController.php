@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Requests\User\UpdateProfileRequest;
 use App\Http\Resources\User\UserProfileResource;
 use App\Models\User;
 use App\Repository\QuestRepository;

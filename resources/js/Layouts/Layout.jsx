@@ -20,7 +20,7 @@ export default function Layout({ children }) {
                                 Головна
                             </Link>
                             <Link
-                                href="/test"
+                                href="/quests"
                                 className="text-white text-xl font-medium hover:text-gray-100 transition duration-300 hover:bg-white hover:text-green-500 px-4 py-2 rounded-lg"
                             >
                                 Квести

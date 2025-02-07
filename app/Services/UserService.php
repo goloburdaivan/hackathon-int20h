@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Requests\User\UpdateProfileRequest;
 use App\Models\User;
 use App\Repository\UserRepository;
 
