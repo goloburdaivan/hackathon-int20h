@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\QuestionType;
 use App\Http\Requests\Quest\CreateQuestRequest;
 use App\Http\Requests\Quest\UpdateQuestRequest;
 use App\Http\Resources\Quest\QuestBaseResource;
@@ -47,6 +48,7 @@ class QuestController extends Controller
     {
         return Inertia::render('Quest/Edit', [
             'quest' => new QuestResource($quest),
+            'question_types' => QuestionType::getLists(),
         ]);
     }
 
