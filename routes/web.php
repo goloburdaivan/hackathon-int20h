@@ -17,7 +17,7 @@ Route::get('/test', function () {
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'loginIndex')->name('login');
     Route::get('/register', 'registerIndex')->name('register');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/logout', 'logout')->name('logout');
     Route::post('/login', 'login')->name('auth.login');
     Route::post('/register', 'register')->name('auth.register');
     Route::get('/oauth/login-github', 'loginGithub')->name('auth.login-github');
