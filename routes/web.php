@@ -8,8 +8,7 @@ use App\Http\Controllers\ProfileController;
 Route::get('/', function () {
     return Inertia::render('Homepage/Index');
 })
-    ->name('home')
-    ->middleware(['auth']);
+    ->name('home');
 
 Route::get('/test', function () {
     return Inertia::render('Quest/Create');
@@ -18,6 +17,7 @@ Route::get('/test', function () {
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'loginIndex')->name('login');
     Route::get('/register', 'registerIndex')->name('register');
+    Route::post('/logout', 'logout')->name('logout');
     Route::post('/login', 'login')->name('auth.login');
     Route::post('/register', 'register')->name('auth.register');
     Route::get('/oauth/login-github', 'loginGithub')->name('auth.login-github');

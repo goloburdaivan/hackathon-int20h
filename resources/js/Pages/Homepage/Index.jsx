@@ -1,7 +1,7 @@
 import Layout from "../../Layouts/Layout";
 import { Link } from "@inertiajs/react";
 
-function Home() {
+export default function Home() {
     return (
         <div className="text-center py-12">
             <h1 className="text-4xl font-bold text-gray-800">Ласкаво просимо!</h1>
@@ -42,6 +42,3 @@ function Home() {
         </div>
     );
 }
-
-Home.layout = page => <Layout children={page} />;
-export default Home;

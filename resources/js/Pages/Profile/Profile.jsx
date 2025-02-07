@@ -20,6 +20,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 function Profile({ user, quests }) {
     const { data, setData, post, progress } = useForm({
@@ -34,6 +35,12 @@ function Profile({ user, quests }) {
     const handleSave = () => {
         post("/profile/update", {
             onSuccess: () => setIsEditing(false),
+        });
+    };
+
+    const handleLogout = () => {
+        post("/logout", {
+            onSuccess: () => window.location.href = "/",
         });
     };
 
@@ -94,6 +101,19 @@ function Profile({ user, quests }) {
                             </Button>
                         </>
                     )}
+                    <Button
+                        variant="outlined"
+                        startIcon={<ExitToAppIcon />}
+                        onClick={handleLogout}
+                        sx={{
+                            mt: 2,
+                            borderColor: "#d32f2f",
+                            color: "#d32f2f",
+                            borderRadius: "30px",
+                        }}
+                    >
+                        Вийти
+                    </Button>
                 </Box>
 
                 <Paper sx={{ padding: "30px", borderRadius: "16px", boxShadow: 5, backgroundColor: "#ffffff", mt: 4, position: "relative" }}>
