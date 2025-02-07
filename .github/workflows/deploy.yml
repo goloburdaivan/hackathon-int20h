@@ -1,0 +1,36 @@
+name: Deploy to GCP VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Vultr VM via SSH
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.VULTR_HOST }}
+          username: root
+          key: ${{ secrets.VULTR_SSH_KEY }}
+          port: 22
+          script: |
+            cd hackathon-int20h
+            git pull origin main
+            sail down
+            sail up -d
+
+            echo "Waiting for the container to start..."
+            until docker exec backend ls >/dev/null 2>&1; do
+              sleep 1
+            done
+
+            docker exec backend php artisan migrate --force
+            docker exec backend npm run build
