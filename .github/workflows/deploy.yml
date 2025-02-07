@@ -25,8 +25,8 @@ jobs:
             cd hackathon-int20h
             git pull origin main
             alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
-            sail down
-            sail up -d
+            docker compose down
+            docker compose up -d
 
             echo "Waiting for the container to start..."
             until docker exec backend ls >/dev/null 2>&1; do
