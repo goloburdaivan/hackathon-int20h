@@ -20,7 +20,7 @@ function LoginForm() {
     };
 
     return (
-        <Box sx={{ height: '100vh', backgroundColor: '#e8f5e9' }}> {/* Full screen background */}
+        <Box sx={{ height: '100vh', backgroundColor: '#e8f5e9' }}>
             <CssBaseline />
             <Container component="main" maxWidth="md" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                 <Box

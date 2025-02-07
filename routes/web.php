@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Homepage/Index', []);
+    return Inertia::render('Homepage/Index');
 })
     ->name('home')
     ->middleware(['auth']);
