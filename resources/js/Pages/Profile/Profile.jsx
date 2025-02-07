@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { usePage, useForm, Link } from "@inertiajs/react";
+import React, { useState, useEffect } from "react";
+import { useForm, Link } from "@inertiajs/react";
 import {
     Box,
     Typography,
@@ -22,7 +22,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
-function Profile({ user, quests }) {
+function Profile({ user, quests: initialQuests }) {
     const { data, setData, post, progress } = useForm({
         name: user.name,
         email: user.email,
@@ -31,24 +31,55 @@ function Profile({ user, quests }) {
 
     const [isEditing, setIsEditing] = useState(false);
     const [preview, setPreview] = useState(user.avatar || null);
+    const [quests, setQuests] = useState(initialQuests);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
 
+    // Обработчик сохранения профиля
     const handleSave = () => {
         post("/profile/update", {
             onSuccess: () => setIsEditing(false),
         });
     };
 
+    // Обработчик выхода из аккаунта
     const handleLogout = () => {
         post("/logout", {
             onSuccess: () => window.location.href = "/",
         });
     };
 
+    // Обработчик изменения аватара
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setData("avatar", file);
             setPreview(URL.createObjectURL(file));
+        }
+    };
+
+    // Подгрузка новых квестов
+    const loadMoreQuests = () => {
+        if (loading || !hasMore) return;
+
+        setLoading(true);
+        fetch(`/user-quests?page=${page + 1}`)
+            .then((response) => response.json())
+            .then((data) => {
+                setQuests((prevQuests) => [...prevQuests, ...data.quests]);
+                setPage((prevPage) => prevPage + 1);
+                setHasMore(data.hasMore);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    };
+
+    // Обработчик скролла для infinite scroll
+    const handleScroll = (e) => {
+        const bottom = e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
+        if (bottom) {
+            loadMoreQuests();
         }
     };
 
@@ -122,30 +153,48 @@ function Profile({ user, quests }) {
 
                     <Typography variant="h5" sx={{ fontWeight: "bold", color: "#333", mb: 2, textAlign: "center" }}>Мої квести</Typography>
 
-                    {quests.length > 0 ? (
-                        <Grid container spacing={3}>
-                            {quests.map((quest) => (
-                                <Grid item xs={12} sm={6} key={quest.id}>
-                                    <Card sx={{ boxShadow: 3, borderRadius: "12px", transition: "transform 0.2s", "&:hover": { transform: "scale(1.05)", boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.15)" } }}>
-                                        <CardContent>
-                                            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#2e7d32", mb: 1 }}>{quest.name}</Typography>
-                                            <Typography variant="body2" sx={{ color: "#555" }}>{quest.description}</Typography>
-                                        </CardContent>
-                                        <CardActions sx={{ justifyContent: "space-between", padding: "16px" }}>
-                                            <Button size="small" variant="contained" startIcon={<PlayArrowIcon />} sx={{ backgroundColor: "#66bb6a", borderRadius: "30px" }}>
-                                                Грати
-                                            </Button>
-                                            <Button size="small" variant="outlined" sx={{ borderColor: "#66bb6a", color: "#388e3c", borderRadius: "30px" }}>
-                                                Редагувати
-                                            </Button>
-                                        </CardActions>
-                                    </Card>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    ) : (
-                        <Typography variant="body2" sx={{ color: "#888", textAlign: "center", mt: 2 }}>У вас поки немає квестів.</Typography>
-                    )}
+                    <div onScroll={handleScroll} style={{ maxHeight: "500px", overflowY: "auto" }}>
+                        {quests.length > 0 ? (
+                            <Grid container spacing={3} sx={{ px: 2 }}>
+                                {quests.map((quest) => (
+                                    <Grid item xs={12} sm={6} key={quest.id}>
+                                        <Card sx={{
+                                            boxShadow: 3,
+                                            borderRadius: "12px",
+                                            transition: "transform 0.2s",
+                                            "&:hover": {
+                                                transform: "scale(1.05)",
+                                                boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.15)"
+                                            }
+                                        }}>
+                                            <CardContent>
+                                                <Typography variant="h6" sx={{
+                                                    fontWeight: "bold",
+                                                    color: "#2e7d32",
+                                                    mb: 1
+                                                }}>{quest.name}</Typography>
+                                                <Typography variant="body2" sx={{ color: "#555" }}>{quest.description}</Typography>
+                                            </CardContent>
+                                            <CardActions sx={{ justifyContent: "space-between", padding: "16px" }}>
+                                                <Button size="small" variant="contained" startIcon={<PlayArrowIcon />} sx={{ backgroundColor: "#66bb6a", borderRadius: "30px" }}>
+                                                    Грати
+                                                </Button>
+                                                <Button size="small" variant="outlined" sx={{
+                                                    borderColor: "#66bb6a",
+                                                    color: "#388e3c",
+                                                    borderRadius: "30px"
+                                                }}>
+                                                    Редагувати
+                                                </Button>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        ) : (
+                            <Typography variant="body2" sx={{ color: "#888", textAlign: "center", mt: 2 }}>У вас поки немає квестів.</Typography>
+                        )}
+                    </div>
 
                     <Box textAlign="center" mt={3}>
                         <Button component={Link} href="/test" variant="contained" startIcon={<AddCircleIcon />} sx={{ backgroundColor: "#66bb6a", borderRadius: "30px" }}>

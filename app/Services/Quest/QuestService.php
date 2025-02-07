@@ -69,7 +69,7 @@ class QuestService
             ->load('questions');
     }
 
-    public function getPaginated(int $pages = 10): LengthAwarePaginator
+    public function getPaginated(int $pages = 8): LengthAwarePaginator
     {
         $query = $this->questRepository
             ->query()
