@@ -80,7 +80,7 @@ class QuestService
         return $questsQuery->paginate($pages);
     }
 
-    public function getUserPaginated(User $user): LengthAwarePaginator
+    public function getUserPaginated(User $user, int $pages = 10): LengthAwarePaginator
     {
         $query = $this->questRepository
             ->query()
