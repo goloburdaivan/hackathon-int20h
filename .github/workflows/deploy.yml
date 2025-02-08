@@ -25,4 +25,5 @@ jobs:
             cd hackathon-int20h
             git pull origin main
             docker exec hackathon-int20h-backend-1 php artisan migrate --force
+            docker exec hackathon-int20h-backend-1 npm install
             docker exec hackathon-int20h-backend-1 npm run build
