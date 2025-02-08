@@ -2,24 +2,29 @@
 
 namespace App\Events\Room;
 
-use App\Models\Room;
-use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserJoinedRoomEvent implements ShouldBroadcast
+class GameCompletedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * Create a new event instance.
+     */
     public function __construct(
         public int $roomId,
-        public User $user,
     ) {
     }
 
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return array<int, Channel>
+     */
     public function broadcastOn(): array
     {
         return [
@@ -27,18 +32,8 @@ class UserJoinedRoomEvent implements ShouldBroadcast
         ];
     }
 
-    public function broadcastWith(): array
+    public function broadcastAs(): string
     {
-        return [
-            'user' => [
-                'id' => $this->user->id,
-                'name' => $this->user->name,
-            ],
-        ];
-    }
-
-    public function broadcastAs()
-    {
-        return "UserJoinedRoomEvent";
+        return "GameStartedEvent";
     }
 }

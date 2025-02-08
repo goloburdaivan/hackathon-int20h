@@ -2,6 +2,8 @@
 
 namespace App\Services\Room;
 
+use App\Enums\RoomStatusEnum;
+use App\Events\Room\GameStartedEvent;
 use App\Events\Room\UserJoinedRoomEvent;
 use App\Events\Room\UserMovedToQuestionEvent;
 use App\Http\Requests\Room\RollDiceRequest;
@@ -27,17 +29,33 @@ class RoomService
             ]);
     }
 
-    public function joinRoom(User $user, Room $room): void
+    /**
+     * @throws \Exception
+     */
+    public function joinRoom(User $user, Room $room): bool
     {
         if ($room->users()->where('user_id', $user->id)->exists()) {
-            return;
+            return true;
+        }
+
+        if ($room->max_participants === $room->users()->count()) {
+            return false;
         }
 
         $room->users()->attach($user, [
             'question_id' => 1,
         ]);
 
-        event(new UserJoinedRoomEvent($room));
+        if ($room->max_participants === $room->users()->count()) {
+            $this->roomRepository->update($room, [
+                'status' => RoomStatusEnum::IN_PROGRESS,
+            ]);
+            event(new GameStartedEvent($room->id));
+        }
+
+        event(new UserJoinedRoomEvent($room->id, $user));
+
+        return true;
     }
 
     public function move(Room $room, User $user, RollDiceRequest $request): void

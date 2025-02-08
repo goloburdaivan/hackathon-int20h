@@ -68,6 +68,7 @@ Route::controller(QuestionController::class)->middleware('auth')->group(function
     Route::post('/quests/{quest}/questions', 'store');
     Route::delete('/quests/{quest}/questions/{question}', 'destroy');
     Route::patch('/quests/{quest}/questions/{question}', 'update');
+    Route::post('/quests/{quest}/questions/{question}/check', 'checkCorrectness');
 });
 
 Route::controller(RoomController::class)->middleware('auth')->group(function () {

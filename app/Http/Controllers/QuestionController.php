@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Questions\CheckAnswerRequest;
 use App\Http\Requests\Questions\CreateQuestionRequest;
 use App\Http\Requests\Questions\UpdateQuestionRequest;
 use App\Http\Resources\Question\QuestionResource;
@@ -76,5 +77,15 @@ class QuestionController extends Controller
         }
 
         return redirect()->route('quest.edit', $quest);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function checkCorrectness(Quest $quest, Question $question, CheckAnswerRequest $request): JsonResponse
+    {
+        return response()->json([
+            'correctness' => $this->questionsService->checkCorrectness($question, $request),
+        ]);
     }
 }

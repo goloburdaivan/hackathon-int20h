@@ -19,6 +19,5 @@ class UserJoinedRoomListener implements ShouldQueue
      */
     public function handle(UserJoinedRoomEvent $event): void
     {
-        $room = $event->room;
     }
 }

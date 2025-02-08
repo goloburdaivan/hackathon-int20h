@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property string $title
  * @property string $description
- * @property string $type
+ * @property QuestionType $type
  * @property string $image
  * @property string $single_answer
  * @property array $questions
