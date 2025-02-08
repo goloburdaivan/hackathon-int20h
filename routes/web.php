@@ -14,10 +14,6 @@ Route::get('/', function () {
 })
     ->name('home');
 
-Route::get('/test', function () {
-    return Inertia::render('Quest/Create');
-});
-
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'loginIndex')
         ->name('login');

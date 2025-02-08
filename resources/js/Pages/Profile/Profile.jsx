@@ -179,7 +179,7 @@ function Profile({ user, quests: initialQuests }) {
                                                 <Button size="small" variant="contained" startIcon={<PlayArrowIcon />} sx={{ backgroundColor: "#66bb6a", borderRadius: "30px" }}>
                                                     Грати
                                                 </Button>
-                                                <Button size="small" variant="outlined" sx={{
+                                                <Button href={`/quests/${quest.id}/edit`} size="small" variant="outlined" sx={{
                                                     borderColor: "#66bb6a",
                                                     color: "#388e3c",
                                                     borderRadius: "30px"
@@ -197,7 +197,7 @@ function Profile({ user, quests: initialQuests }) {
                     </div>
 
                     <Box textAlign="center" mt={3}>
-                        <Button component={Link} href="/test" variant="contained" startIcon={<AddCircleIcon />} sx={{ backgroundColor: "#66bb6a", borderRadius: "30px" }}>
+                        <Button component={Link} href="/quests/create" variant="contained" startIcon={<AddCircleIcon />} sx={{ backgroundColor: "#66bb6a", borderRadius: "30px" }}>
                             Створити новий квест
                         </Button>
                     </Box>
