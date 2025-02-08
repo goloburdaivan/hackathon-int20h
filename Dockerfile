@@ -40,7 +40,6 @@ COPY ./docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 RUN php artisan key:generate
-RUN php artisan migrate
 
 EXPOSE 9000
 
