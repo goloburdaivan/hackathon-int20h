@@ -12,6 +12,7 @@ class Room extends Model
 {
     protected $fillable = [
         'owner_id',
+        'quest_id',
         'max_participants',
         'status',
         'duration',

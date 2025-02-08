@@ -72,7 +72,7 @@ Route::controller(QuestionController::class)->middleware('auth')->group(function
 });
 
 Route::controller(RoomController::class)->middleware('auth')->group(function () {
-    Route::get('/rooms/{room}', 'index');
+    Route::get('/rooms/{room}', 'index')->name('room.index');
 });
 
 Route::post('/rooms/{room}/roll-dice', [DiceController::class, 'rollDice']);

@@ -99,6 +99,6 @@ class QuestController extends Controller
     {
         $room = $this->questService->startQuest($request, $quest);
 
-        return redirect()->route('quest.edit', $quest);
+        return redirect()->route('room.index', $room->id);
     }
 }
