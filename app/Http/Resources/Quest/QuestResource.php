@@ -21,7 +21,7 @@ class QuestResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'cover' => Storage::url($this->cover),
-            'questions' => new QuestionResource($this->whenLoaded('questions')),
+            'questions' => QuestionResource::collection($this->whenLoaded('questions')),
         ];
     }
 }

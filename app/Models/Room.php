@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RoomStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,6 +14,11 @@ class Room extends Model
         'owner_id',
         'max_participants',
         'status',
+        'duration',
+    ];
+
+    protected $casts = [
+        'status' => RoomStatusEnum::class,
     ];
 
     public function owner(): BelongsTo
@@ -30,7 +36,7 @@ class Room extends Model
         return $this->belongsToMany(User::class, 'room_participants');
     }
 
-    public function roomParticipants(): HasMany
+    public function participants(): HasMany
     {
         return $this->hasMany(RoomParticipant::class);
     }

@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\Room\DiceController;
+use App\Http\Controllers\Room\RoomController;
 use App\Http\Controllers\User\AuthController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return Inertia::render('Homepage/Index');
@@ -57,6 +59,8 @@ Route::controller(QuestController::class)->middleware('auth')->group(function ()
         ->name('quest.update');
     Route::delete('/quests/{quest}', 'destroy')
         ->name('quest.destroy');
+    Route::post('/quests/{quest}/start', 'startQuest')
+        ->name('quest.start');
 });
 
 Route::controller(QuestionController::class)->middleware('auth')->group(function () {
@@ -65,3 +69,9 @@ Route::controller(QuestionController::class)->middleware('auth')->group(function
     Route::delete('/quests/{quest}/questions/{question}', 'destroy');
     Route::patch('/quests/{quest}/questions/{question}', 'update');
 });
+
+Route::controller(RoomController::class)->middleware('auth')->group(function () {
+    Route::get('/rooms/{room}', 'index');
+});
+
+Route::post('/rooms/{room}/roll-dice', [DiceController::class, 'rollDice']);

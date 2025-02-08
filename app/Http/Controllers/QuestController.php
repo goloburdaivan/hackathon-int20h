@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Enums\QuestionType;
 use App\Http\Requests\Quest\CreateQuestRequest;
+use App\Http\Requests\Quest\StartQuestRequest;
 use App\Http\Requests\Quest\UpdateQuestRequest;
 use App\Http\Resources\Quest\QuestBaseResource;
 use App\Http\Resources\Quest\QuestResource;
 use App\Models\Quest;
 use App\Models\User;
 use App\Services\Quest\QuestService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -64,7 +66,7 @@ class QuestController extends Controller
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function store(CreateQuestRequest $request): RedirectResponse
     {
@@ -74,7 +76,7 @@ class QuestController extends Controller
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function update(UpdateQuestRequest $request, Quest $quest): RedirectResponse
     {
@@ -88,5 +90,15 @@ class QuestController extends Controller
         $this->questService->delete($quest);
 
         return redirect()->route('quest.index');
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function startQuest(StartQuestRequest $request, Quest $quest): RedirectResponse
+    {
+        $room = $this->questService->startQuest($request, $quest);
+
+        return redirect()->route('quest.edit', $quest);
     }
 }

@@ -2,13 +2,18 @@
 
 namespace App\Services\Quest;
 
+use App\Enums\RoomStatusEnum;
 use App\Filters\Quest\NumberOfQuestionsQueryFilter;
 use App\Filters\Quest\SearchQuestQueryFilter;
 use App\Http\Requests\Quest\CreateQuestRequest;
+use App\Http\Requests\Quest\StartQuestRequest;
 use App\Http\Requests\Quest\UpdateQuestRequest;
 use App\Models\Quest;
+use App\Models\Room;
 use App\Models\User;
 use App\Repository\QuestRepository;
+use App\Repository\RoomRepository;
+use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pipeline\Pipeline;
 
@@ -16,11 +21,12 @@ class QuestService
 {
     public function __construct(
         private readonly QuestRepository $questRepository,
+        private readonly RoomRepository $roomRepository,
     ) {
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function create(CreateQuestRequest $request): Quest
     {
@@ -37,7 +43,7 @@ class QuestService
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function update(UpdateQuestRequest $request, Quest $quest): Quest
     {
@@ -102,5 +108,26 @@ class QuestService
             ->thenReturn();
 
         return $questsQuery->paginate($pages);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function startQuest(StartQuestRequest $request, Quest $quest): Room
+    {
+        $data = $request->validated();
+
+        /** @var Room $room */
+        $room = $this->roomRepository->create($data + [
+            'owner_id' => $request->user()->id,
+            'quest_id' => $quest->id,
+            'status' => RoomStatusEnum::WAITING,
+        ]);
+
+        $room->users()->attach($request->user()->id, [
+            'question_id' => 1,
+        ]);
+
+        return $room;
     }
 }
