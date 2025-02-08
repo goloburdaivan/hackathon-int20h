@@ -125,7 +125,7 @@ class QuestService
         ]);
 
         $room->users()->attach($request->user()->id, [
-            'question_id' => 1,
+            'question_id' => $quest->questions()->first()->id,
         ]);
 
         return $room;
