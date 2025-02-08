@@ -85,7 +85,7 @@ export default function QuestList({ quests }) {
                                 <p className="text-gray-700 mt-2 font-semibold">Кількість питань: {quest.questions_count}</p>
                                 <div className="mt-4 flex justify-center">
                                     <Link
-                                        href={`/quest/${quest.id}`}
+                                        href={`/quests/${quest.id}`}
                                         className="bg-[#388e3c] text-white py-2 px-6 rounded-lg hover:bg-green-600 transition font-semibold"
                                     >
                                         Пройти квест
