@@ -16,13 +16,11 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 function QuestView({ quest }) {
     const { data, setData, post } = useForm({
         duration: "30",
-        participants: "1",
+        max_participants: "1",
     });
 
     const handleStartQuest = () => {
-        post(`/quests/${quest.id}/start`, {
-            onSuccess: () => alert("Квест начался!")
-        });
+        post(`/quests/${quest.id}/start`);
     };
 
     return (
@@ -58,8 +56,8 @@ function QuestView({ quest }) {
                                 select
                                 fullWidth
                                 label="Количество участников"
-                                value={data.participants}
-                                onChange={(e) => setData("participants", e.target.value)}
+                                value={data.max_participants}
+                                onChange={(e) => setData("max_participants", e.target.value)}
                             >
                                 {["1", "2", "3", "4", "5"].map((option) => (
                                     <MenuItem key={option} value={option}>{option}</MenuItem>
