@@ -10,7 +10,6 @@ class RoomParticipant extends Model
     protected $fillable = [
         'room_id',
         'user_id',
-        'question_id',
     ];
 
     public function room(): BelongsTo
